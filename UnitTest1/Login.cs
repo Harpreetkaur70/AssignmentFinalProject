@@ -3,15 +3,17 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
 using System.Collections.Generic;
 using System.Text;
+using UserClassLibrary.Migrations;
 using UserClassLibrary.Models;
 using UserClassLibrary.Services;
+using UserClassLibrary.ViewModel;
 
 namespace TestingUserWebApi
 {
-    public  class GetUserByName
+    public class Login      
     {
         private readonly IUserData _user;
-        public GetUserByName()
+        public Login()
         {
             var services = new ServiceCollection();
             services.AddTransient<IUserData, UserData>();
@@ -20,33 +22,23 @@ namespace TestingUserWebApi
         }
         #region positive test cases
         [TestMethod]
-        public void TestGetUserByName(string username)
+        public void TestLogin(LoginViewModel loginVM)
         {
+     
             //Arrange
-            var expected = typeof(User);
-            username = "TestUser";
+            var expected = typeof(user);
             //Act
-            var result = _user.GetUserByUserName(username);
+            var result = _user.Login(new LoginViewModel {UserNameOrEmail= "TestUser123@gmail.com", Password= "TestUser123" });
             //Assert
             Assert.IsInstanceOfType(expected, result.GetType());
-           
         }
-
         #endregion
-
-        #region negative test cases
-        [TestMethod]
-        public void TestNotGetUserByName(string username)
+        public void TestNoLogin()
         {
             //Arrange
-            var expected = typeof(User);
-            username = "TestUser";
+            var expected = typeof(user);
             //Act
-            var result = _user.GetUserByUserName(username);
-            //Assert
-            Assert.IsNotInstanceOfType(expected, result.GetType());
-
+            var result = _user.Login(new LoginViewModel { UserNameOrEmail = "TestUser123@gmail.com", Password = "TestUser123" });
         }
-        #endregion
     }
 }

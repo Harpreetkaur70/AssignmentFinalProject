@@ -1,4 +1,7 @@
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using UserClassLibrary.Migrations;
+using UserClassLibrary.Models;
 using UserClassLibrary.Services;
 
 namespace UnitTest1
@@ -19,28 +22,28 @@ namespace UnitTest1
             }
             #region positive test cases
             [TestMethod]
-
-
-
             public void TestAddUser()
             {
                 //Arrange
-                var expected = typeof(User);
-
-
-
+                var expected = typeof(user);
                 //Act
-                var result = _user.AddUser(new User() { });
-
-
-
+                var result = _user.AddUser(new User() {FirstName="Test",LastName="User",UserName="TestUser",Email="TestUser123@gmail.com",Password= "TestUser123" });
                 //Assert
-                Assert.(expected, result.GetType());
+                Assert.IsInstanceOfType(expected, result.GetType());
             }
-
-
-
             #endregion
+            #region negative test cases
+            [TestMethod]
+            public void TestAddNoUser()
+            {
+                //Arrange
+                var expected = typeof(UserData);
+                //Act
+                var result = _user.AddUser(new User() { FirstName = "Test", LastName = "User", UserName ="TestUser ", Email= "TestUser123@gmail.com",Password= "TestUser123" });
+                //Assert
+                Assert.IsNotInstanceOfType(expected, result.GetType());
+                #endregion
+            }
         }
     }
 }
